@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="id" 
+x-data="{
+    mobileMenu: false,
+    showModal: false,
+    selectedMember: {},
+    search: '',
+    activeRole: 'semua',
+    squad: [
+        { name: 'Arif Purnawan', role: 'Anggota Kelas', bio: 'Anggota kelas selalu menyenangkan', ig: '@twins_ar141', img: 'images/Arif nawan.jpeg', emoji: '🌟', hobi: 'Mendaki', cita: 'Suami idaman', no: '01' },
+
+        { name: 'Arif Purnomo', role: 'Anggota Kelas', bio: 'Membuat orang lain bahagia adalah impianku.', ig: '@a_arf_pm30', img: 'images/Arif pm.jpeg', emoji: '🌟', hobi: 'Ngoding, Gaming and Reading', cita: 'Programmer Zaman Now', no: '02' },
+
+        { name: 'Azifa Mumtaz S', role: 'Anggota Kelas', bio: 'Selalu ceria dan ceria selalu', ig: '@azifa_mz', img: 'images/Azifa.png', emoji: '🌸', hobi: 'Membaca, Menulis, Bercetita', cita: 'Penulis Muda', no: '03' },
+
+        { name: 'Deaz Hizbiyah R', role: 'Kebersiahan', bio: 'Selalu Bersih dan rapih selalu!', ig: '@deazhizbiyah', img: 'images/Deaz.jpeg', emoji: '🗑️', hobi: 'Membaca, Menulis, Bercetita', cita: 'Penulis dan Dosen muda', no: '04' },
+
+        { name: 'Desti Nurul F', role: 'Dokumentasi', bio: 'Cintai momen-momen indah', ig: '@ur.udeest.i', img: 'images/Desti.jpeg', emoji: '📸', hobi: 'Membaca, Menulis, Mengajar', cita: 'Guru TK', no: '05' },
+
+        { name: 'Deswina Dzuannur A', role: 'Sekretaris', bio: 'Jangan terlalu berisik lagi sibuk', ig: '@deswinadn', img: 'images/Deswina.jpeg', emoji: '📝', hobi: 'Membaca, Menulis, Menghapal,Mengajar', cita: 'Guru', no: '06' },
+
+        { name: 'Elsa Rahmawati', role: 'Anggota Kelas', bio: 'Hemat pangkal kaya!', ig: '@elsarahma180', img: 'images/Elsa.jpeg', emoji: '🌸', hobi: 'Menabung, Memasak', cita: 'MasterChef', no: '07' },
+
+        { name: 'Fadila Nur F', role: 'Sekretaris', bio: 'Saya adalah seorang sekretaris yang sangat rapi.', ig: '@handmade_bydilla', img: 'images/Fadila.jpeg', emoji: '📝', hobi: 'Menabung, Memasak dll', cita: 'MasterKreativity', no: '08' },
+
+        { name: 'Faturohman N', role: 'Anggota Kelas', bio: 'Senyum adalah senjata paling ampuh di dunia.', ig: '@paturparkerr_', img: 'images/Fatur.jpeg', emoji: '🌟', hobi: 'Public Speaking, Vlog', cita: 'Presenter TV', no: '09' },
+
+        { name: 'Fauzan Al-anshari', role: 'Wakil Ketua Kelas', bio: 'Dingin tetapi bukan hujan tapi Fauzan.', ig: '@fa.uzan979', img: 'images/Fauzan.jpeg', emoji: '👑', hobi: 'Hikking', cita: 'Bozz Besar', no: '10' },
+
+        { name: 'Fingka Leidy A', role: 'Anggota Kelas', bio: 'Cerdas, Cermat, Cerdik, Cemas Dek.', ig: '@fingkaldyn_', img: 'images/Fingka.png', emoji: '🌸', hobi: 'Belajar,Belajar,Belajar', cita: 'Cekgu Besar (Guru)', no: '11' },
+
+        { name: 'Gilang Herdiansyah', role: 'Sosial', bio: 'Kepedulian adalah tindakan terbaik.', ig: '@gilzz_041', img: 'images/Gilang.jpeg', emoji: '🤝', hobi: 'Public Speaking, Vlog', cita: 'vloger ahli firsafat', no: '12' },
+
+        { name: 'Ilma Zaina A', role: 'Anggota Kelas', bio: 'Art is life, life is art. Setiap sudut adalah kanvas.', ig: '@ilmazaina_', img: 'images/Ilma.jpeg', emoji: '🌸', hobi: 'Nonton Drakor, Dracin, Drasun', cita: 'Wibu, Aktor Anime', no: '13' },
+
+        { name: 'Jenisa Bilqis S', role: 'Kebersiahan', bio: 'Siap sedia selalu!.', ig: '@jenisa_bilqis', img: 'images/Jenisa.jpeg', emoji: '🗑️', hobi: 'Nonton Drakor, Dracin, Drasun', cita: 'Guru Matematika', no: '14' },
+
+        { name: 'Miftah Fauzan H', role: 'Anggota Kelas', bio: '0888 kapan-kapan kita balapan.', ig: '@owner_redberry', img: 'images/Miftah.jpeg', emoji: '🌟', hobi: 'Touring', cita: 'Atlet Profesional Motor Terbang', no: '15' },
+
+        { name: 'M.Akhdan', role: 'Keamanan', bio: 'Senyum adalah senjataku.', ig: '@muhammad.akhdan_', img: 'images/Akhdan.jpeg', emoji: '⚔️', hobi: 'Berjualan', cita: 'Pemuda yang syukses', no: '16' },
+
+        { name: 'M.Firzan Husairi', role: 'Ketua Kelas', bio: 'Memimpin dengan hati dan dedikasi.', ig: '@mfirzanhusairi', img: 'images/Firzan.png', emoji: '👑', hobi: 'Gamer, Streamer', cita: 'Ulama besar', no: '17' },
+
+        { name: 'M.Hasbi', role: 'Pendidikan', bio: 'Ilmu adalah pengetahuan.', ig: '@mhmd_hassbi', img: 'images/Hasbi.jpeg', emoji: '📚', hobi: 'Belajar macam-macam bahasa kecuali bhs semut', cita: 'Pengen ke Jepang', no: '18' },
+
+        { name: 'M.Nizar Al-abdani', role: 'Dokumentasi', bio: 'Abadikan setiap momen yang terindah.', ig: '@nizaralbd_', img: 'images/Nizar.jpeg', emoji: '📸', hobi: 'Akustik,Hiking,Racing', cita: 'Mahkamah Konstitusi atau Hakim', no: '19' },
+
+        { name: 'Nabila Salma S', role: 'Keamanan', bio: 'Ketertiban adalah kebahagiaan.', ig: '@nabila_salma_s', img: 'images/Nabila.jpeg', emoji: '⚔️', hobi: 'Belajar', cita: 'Dosen Muda yang Smart', no: '20' },
+
+        { name: 'Reza Mohammed Z', role: 'Anggota Kelas', bio: 'Diam bukan berarti tak punya suara.', ig: '@joyousreza', img: 'images/Reza.jpeg', emoji: '🌟', hobi: 'Speding dan otomotif', cita: 'Aktor Korea', no: '21' },
+        
+        { name: 'Rindy indriani', role: 'Anggota Kelas', bio: 'Setiap pagi adalah kesempatan baru untuk jadi lebih baik.', ig: '@rindyindriani', img: 'images/Rindy.jpeg', emoji: '🌸', hobi: 'Makan,Minum,Sholat', cita: 'Enterpreneur', no: '22' },
+
+        { name: 'Syams Islama A', role: 'Anggota Kelas', bio: 'Hidup ini singkat, jadi hiduplah dengan penuh!', ig: '@syams.islama315', img: 'images/Syam.jpeg', emoji: '🌟', hobi: 'banyak', cita: 'apa aja asalkan jangan jadi Nabi', no: '23' },
+
+        { name: 'Tazkiya Sulastri R', role: 'Anggota Kelas', bio: 'Musik adalah bahasa jiwa yang tak butuh terjemahan.', ig: '@tazkiasulastri', img: 'images/Tazkiya.jpeg', emoji: '🌸', hobi: 'Belajar Menyanyi', cita: 'Musisi Idol', no: '24' },
+
+        { name: 'Vani Nur R', role: 'Sosial', bio: 'Cintai semua orang.', ig: '@vanninr_', img: 'images/Vani.jpeg', emoji: '🤝', hobi: 'Belajar Menyanyi', cita: 'Musisi Idol', no: '25' },
+
+        { name: 'Vanisa Rahma', role: 'Anggota Kelas', bio: 'Bersuara sedikitpun berharga.', ig: '@van_afterhours', img: 'images/Vanisa.jpeg', emoji: '🌸', hobi: 'Kulineran', cita: 'Enterpreneur', no: '26' },
+
+        { name: 'Wini Martiani', role: 'Pendidikan', bio: 'pintar dengan ilmu dan bodoh dng kemasalan.', ig: '@diary_wini', img: 'images/Wini.jpeg', emoji: '📚', hobi: 'Menulis dan Kulineran', cita: 'Penulis dan Enterpreneur', no: '27' },
+
+        { name: 'Yumna Nailah M.Z', role: 'Bendahara', bio: 'Uang menjadikan kita kaya.', ig: '@nailahmtzh_', img: 'images/Yumna.jpeg', emoji: '💰', hobi: 'Membaca, Belajar, Editing', cita: 'Wanita Sholihah', no: '28' },
+
+        { name: 'Zahra Syakira', role: 'Bendahara', bio: 'Uang kas adalah segalanya.', ig: '@zahrasyakira_09', img: 'images/Zahra.jpeg', emoji: '💰', hobi: 'Belajar, Memanah, dll', cita: 'Menjadi orang bahagia syukses dan shalihah', no: '29' }
+        
+    ],
+    get filtered() {
+        return this.squad.filter(m => {
+            const matchSearch = m.name.toLowerCase().includes(this.search.toLowerCase()) || m.role.toLowerCase().includes(this.search.toLowerCase());
+            const matchRole = this.activeRole === 'semua' || (this.activeRole === 'pengurus' ? ['Ketua Kelas','Wakil Ketua Kelas','Sekretaris','Bendahara','Pendidikan','Keamanan','Kebersiahan','Sosial','Dokumentasi'].includes(m.role) : m.role === 'Anggota Kelas');
+            return matchSearch && matchRole;
+        });
+    }
+}" class="overflow-x-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Squad | REGENOSA XII IIK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="images/logo.jpeg" type="image/x-icon">
+
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{display:['Syne','sans-serif'],body:['DM Sans','sans-serif']}}}}</script>
+
+    <style>
+        [x-cloak]{display:none!important}
+        *{font-family:'DM Sans',sans-serif}
+        h1,h2,h3,h4{font-family:'Syne',sans-serif}
+        html{scroll-behavior:smooth}
+        ::-webkit-scrollbar{width:6px}
+        ::-webkit-scrollbar-track{background:#050a0e}
+        ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#00ff88,#00cc6a);border-radius:10px}
+        body{background:#050a0e;color:white}
+        .bg-grid{background-image:linear-gradient(rgba(0,255,136,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.03) 1px,transparent 1px);background-size:40px 40px}
+        .nav-link::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:#00ff88;transform:scaleX(0);transition:transform 0.3s;border-radius:2px}
+        .nav-link:hover::after{transform:scaleX(1)}
+        .nav-link{position:relative}
+        .squad-card{transition:all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);background:rgba(13,17,23,0.8);border:1px solid rgba(0,255,136,0.08)}
+        .squad-card:hover{transform:translateY(-8px);border-color:rgba(0,255,136,0.3);box-shadow:0 20px 40px rgba(0,255,136,0.1)}
+        .btn-shimmer{overflow:hidden;position:relative}
+        .btn-shimmer::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transform:translateX(-100%) skewX(-15deg)}
+        .btn-shimmer:hover::after{animation:shimmer 0.6s ease}
+        @keyframes shimmer{0%{transform:translateX(-100%) skewX(-15deg)}100%{transform:translateX(200%) skewX(-15deg)}}
+        .scan-line{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(0,255,136,0.3),transparent);animation:scan 4s linear infinite;pointer-events:none;z-index:999}
+        @keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        .float{animation:float 4s ease-in-out infinite}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+        .squad-card{animation:fadeInUp 0.5s ease forwards}
+        .search-input:focus{border-color:rgba(0,255,136,0.4)!important;box-shadow:0 0 20px rgba(0,255,136,0.08)!important}
+
+        /* Squad card image hover fix */
+        .squad-card img {
+            filter: grayscale(100%);
+            transition: filter 0.5s ease, transform 0.5s ease;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+        .squad-card:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.08);
+        }
+        .squad-card .img-overlay {
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            background: linear-gradient(to top, rgba(0,255,136,0.55) 0%, rgba(0,20,10,0.2) 55%, transparent 100%);
+        }
+        .squad-card:hover .img-overlay {
+            opacity: 1;
+        }
+         /* Fixed image container — same ratio everywhere */
+        .card-img-wrap {
+            position: relative;
+            width: 100%;
+            padding-top: 110%; /* portrait ratio */
+            overflow: hidden;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            background: rgba(0,255,136,0.05);
+        }
+        .card-img-wrap img,
+        .card-img-wrap .img-overlay {
+            position: absolute;
+            inset: 0;
+        }
+    </style>
+</head>
+
+<body class="bg-grid min-h-screen">
+<div class="scan-line"></div>
+
+<!-- NAVBAR -->
+<nav class="fixed top-0 w-full z-50" style="background:rgba(5,10,14,0.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,255,136,0.08)">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center py-4">
+        <a href="index.html" class="flex items-center gap-3 group">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center text-lg transition-transform group-hover:scale-110"
+                 style="background:linear-gradient(135deg,#00ff88,#00994d);box-shadow:0 0 15px rgba(0,255,136,0.3)">🎓</div>
+            <span class="font-display font-black text-xl text-white">REGE<span style="color:#00ff88">NOSA</span></span>
+        </a>
+        <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-white/60">
+            <a href="index.html" class="nav-link hover:text-white transition-colors">Beranda</a>
+            <a href="index.html" class="nav-link hover:text-white transition-colors">Story</a>
+            <a href="squad.html" class="nav-link font-bold" style="color:#00ff88">The Squad</a>
+            <a href="gallery-full.html" class="nav-link hover:text-white transition-colors">Gallery</a>
+            <a href="timeline.html" class="nav-link hover:text-white transition-colors">Timeline</a>
+            <a href="messages.html" class="nav-link hover:text-white transition-colors">Pesan</a>
+        </div>
+        <a href="index.html" class="hidden lg:flex btn-shimmer items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-black"
+           style="background:linear-gradient(135deg,#00ff88,#00cc6a);box-shadow:0 0 20px rgba(0,255,136,0.3)">← Beranda</a>
+        <button @click="mobileMenu = true" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl"
+                style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.2)">
+            <svg class="w-5 h-5" style="color:#00ff88" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+    </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div x-show="mobileMenu" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+     class="fixed inset-0 z-[90] lg:hidden" style="background-color:#050a0e">
+    <div class="flex justify-between items-center px-6 py-5" style="border-bottom:1px solid rgba(0,255,136,0.1)">
+        <span class="font-display font-black text-xl text-white">REGE<span style="color:#00ff88">NOSA</span></span>
+        <button @click="mobileMenu = false" class="w-10 h-10 flex items-center justify-center rounded-xl" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08)">✕</button>
+    </div>
+    <div class="h-[1px]" style="background:linear-gradient(90deg,transparent,#00ff88,transparent)"></div>
+    <div class="flex flex-col px-6 pt-10 gap-1">
+        <a @click="mobileMenu=false" href="index.html#home" class="flex justify-between items-center py-4 text-xl font-display font-bold text-white" style="border-bottom:1px solid rgba(255,255,255,0.04)">🏠 Beranda <span style="color:#00ff88">→</span></a>
+        <a @click="mobileMenu=false" href="squad.html" class="flex justify-between items-center py-4 text-xl font-display font-bold" style="color:#00ff88;border-bottom:1px solid rgba(255,255,255,0.04)">👥 The Squad <span>→</span></a>
+        <a @click="mobileMenu=false" href="gallery-full.html" class="flex justify-between items-center py-4 text-xl font-display font-bold text-white" style="border-bottom:1px solid rgba(255,255,255,0.04)">📸 Gallery <span style="color:#00ff88">→</span></a>
+        <a @click="mobileMenu=false" href="timeline.html" class="flex justify-between items-center py-4 text-xl font-display font-bold text-white" style="border-bottom:1px solid rgba(255,255,255,0.04)">🗓 Timeline <span style="color:#00ff88">→</span></a>
+        <a @click="mobileMenu=false" href="messages.html" class="flex justify-between items-center py-4 text-xl font-display font-bold text-white">💬 Pesan <span style="color:#00ff88">→</span></a>
+    </div>
+</div>
+
+<!-- HERO -->
+<section class="pt-32 pb-12 px-4 md:px-8 max-w-7xl mx-auto text-center">
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm font-medium"
+         style="background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:#00ff88">
+        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+        Pilar Kelas · REGENOSA
+    </div>
+    <h1 class="font-display font-black text-5xl md:text-7xl text-white mb-4">The <span style="color:#00ff88">Squad</span> 🤖</h1>
+    <p class="text-white/40 text-lg max-w-xl mx-auto mb-10">Wajah-wajah luar biasa yang membentuk REGENOSA menjadi keluarga yang tak terlupakan.</p>
+
+    <!-- Search -->
+    <div class="max-w-md mx-auto mb-6">
+        <div class="relative">
+            <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <input type="text" x-model="search" placeholder="Cari nama atau jabatan..."
+                   class="search-input w-full pl-12 pr-5 py-4 rounded-2xl text-white placeholder-white/30 outline-none transition-all"
+                   style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">
+        </div>
+    </div>
+
+    <!-- Filter -->
+    <div class="flex justify-center gap-3 flex-wrap">
+        <button @click="activeRole='semua'" :class="activeRole==='semua'?'active':''"
+                class="filter-btn px-6 py-2.5 rounded-full font-display font-bold text-sm transition-all"
+                style="border:1px solid rgba(0,255,136,0.15);background:rgba(0,255,136,0.04);color:rgba(255,255,255,0.5)">✦ Semua</button>
+        <button @click="activeRole='pengurus'" :class="activeRole==='pengurus'?'active':''"
+                class="filter-btn px-6 py-2.5 rounded-full font-display font-bold text-sm transition-all"
+                style="border:1px solid rgba(0,255,136,0.15);background:rgba(0,255,136,0.04);color:rgba(255,255,255,0.5)">⭐ Pengurus</button>
+        <button @click="activeRole='Anggota'" :class="activeRole==='Anggota'?'active':''"
+                class="filter-btn px-6 py-2.5 rounded-full font-display font-bold text-sm transition-all"
+                style="border:1px solid rgba(0,255,136,0.15);background:rgba(0,255,136,0.04);color:rgba(255,255,255,0.5)">👤 Anggota</button>
+    </div>
+
+    <style>
+        .filter-btn:hover,.filter-btn.active{background:rgba(0,255,136,0.15)!important;border-color:rgba(0,255,136,0.4)!important;color:#00ff88!important}
+        .filter-btn.active{box-shadow:0 0 15px rgba(0,255,136,0.2)}
+    </style>
+</section>
+
+<!-- SQUAD GRID -->
+<section class="max-w-7xl mx-auto px-4 md:px-8 pb-24">
+    <!-- Count -->
+    <p class="text-white/30 text-sm mb-6 text-center">
+        Menampilkan <span style="color:#00ff88;font-weight:bold" x-text="filtered.length"></span> anggota
+    </p>
+
+        <!-- Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <template x-for="member in filtered" :key="member.name">
+            <div @click="selectedMember = member; showModal = true"
+                 class="squad-card rounded-3xl p-4 cursor-pointer">
+                <!-- No badge -->
+                <div class="flex justify-between items-start mb-3">
+                    <span class="text-xs font-display font-bold px-2 py-1 rounded-lg" style="background:rgba(0,255,136,0.08);color:rgba(0,255,136,0.6)" x-text="'#' + member.no"></span>
+                    <span class="text-xl" x-text="member.emoji"></span>
+                </div>
+                <!-- Image -->
+                <div class="card-img-wrap">
+                    <img :src="member.img">
+                    <!-- Overlay gradient neon -->
+                    <div class="img-overlay absolute inset-0 flex items-end justify-center pb-4">
+                        <span class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest text-black shadow-lg"
+                              style="background:#00ff88;box-shadow:0 0 15px rgba(0,255,136,0.5)">✦ Detail</span>
+                    </div>
+                </div>
+                <h4 class="font-display font-bold text-white text-base leading-tight mb-1" x-text="member.name"></h4>
+                <p class="text-xs font-bold uppercase tracking-wider mb-2" style="color:#00ff88" x-text="member.role"></p>
+                <p class="text-xs text-white/40 italic line-clamp-1" x-text="'&quot;' + member.bio + '&quot;'"></p>
+            </div>
+        </template>
+    </div>
+
+    <!-- Empty state -->
+    <div x-show="filtered.length === 0" class="text-center py-24">
+        <p class="text-6xl mb-4">🔍</p>
+        <p class="text-white/40 text-lg">Tidak ditemukan. Coba kata kunci lain.</p>
+    </div>
+</section>
+
+<!-- MODAL -->
+<div x-show="showModal" x-cloak
+     x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+     x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90"
+     class="fixed inset-0 z-[110] flex items-center justify-center p-3 sm:p-6"
+     style="background:rgba(5,10,14,0.85);backdrop-filter:blur(12px)">
+
+    <div @click.away="showModal = false" class="w-full max-w-3xl rounded-[2rem] overflow-hidden flex flex-col md:flex-row relative"
+         style="background:#0d1117;border:1px solid rgba(0,255,136,0.15);box-shadow:0 20px 60px rgba(0,255,136,0.15)">
+
+         <!-- CLOSE BUTTON -->
+         <button @click="showModal = false" class="absolute top-4 right-4 z-50 w-10 h-10 flex items-center justify-center rounded-xl text-white/70 hover:text-white transition-all hover:scale-110"
+                style="background:rgba(0,0,0,0.4);backdrop-filter:blur(5px);border:1px solid rgba(255,255,255,0.1)">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+            
+
+        <!-- image member (anggota)  -->
+         <div class="w-full md:w-2/5 relative bg-black/50">
+            <!-- 🔥 FIX UTAMA ADA DI SINI -->
+            <img :src="selectedMember.img" 
+                 class="w-full h-[45vh] sm:h-[50vh] md:h-full object-cover object-top"
+                 alt="Member Photo">
+            
+            <!-- overlay mobile -->
+            <div class="absolute inset-0 md:hidden" style="background:linear-gradient(to top, #0d1117 0%, transparent 40%, transparent 100%)"></div>
+            <!-- overlay desktop -->
+            <!-- <div class="absolute inset-0 hidden md:block" style="background:linear-gradient(to right, transparent 0%, transparent 70%, #0d1117 100%)"></div> -->
+
+            <!-- Emoji -->
+            <!-- <div class="absolute bottom-4 right-4 md:bottom-6 md:right-6 text-4xl bg-[#0d1117] rounded-full p-2 border border-[#00ff88]/30 shadow-[0_0_15px_rgba(0,255,136,0.3)] float" x-text="selectedMember.emoji"></div> -->
+        </div>
+
+            <!-- CONTENT -->
+            <div class="w-full md:w-3/5 p-5 md:p-10 flex flex-col justify-center">
+
+            <!-- HEADER -->
+            <div class="mb-3">
+                <div class="flex items-center gap-2 mb-2">
+                    <!-- No -->
+                    <span class="text-xs font-bold px-3 py-1 rounded-lg"
+                          style="background:rgba(0,255,136,0.1);color:#00ff88"
+                          x-text="'No. ' + selectedMember.no"></span>
+                    <!-- Role -->
+                    <span class="text-xs uppercase font-bold"
+                          style="color:#00ff88"
+                          x-text="selectedMember.role"></span>
+                </div>
+                <!-- Name -->
+                <h3 class="font-display font-black text-xl md:text-4xl text-white"
+                    x-text="selectedMember.name"></h3>
+
+                <p class="text-[#00ff88] text-sm flex items-center gap-2 font-medium">
+                    <!-- Logo@ -->
+                    <!-- <svg class="w-4 h-4 text-[#00ff88]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/></svg> -->
+                    <span x-text="selectedMember.ig"></span>
+                </p>
+            </div>
+            
+            <!-- BIO -->
+            <div class="p-3 rounded-xl mb-5"
+                 style="background:rgba(0,255,136,0.03);border:1px solid rgba(0,255,136,0.1)">
+                <p class="text-white/80 italic text-sm"
+                   x-text="'&quot;' + selectedMember.bio + '&quot;'"></p>
+            </div>
+
+            <!-- INFO -->
+            <div class="grid grid-cols-2 gap-3 mb-6">
+                
+                <div class="p-3 rounded-xl"
+                     style="background:rgba(255,255,255,0.02)">
+                    <p class="text-xs text-[#00ff88] font-bold">🎯 Hobi</p>
+                    <p class="text-sm text-white/90" x-text="selectedMember.hobi"></p>
+                </div>
+                
+                <div class="p-3 rounded-xl"
+                     style="background:rgba(255,255,255,0.02)">
+                    <p class="text-xs text-[#00ff88] font-bold">🚀 Cita-cita</p>
+                    <p class="text-sm text-white/90" x-text="selectedMember.cita"></p>
+                </div>
+            </div>
+
+            
+            <!-- BUTTON Instagram -->
+            <a :href="selectedMember.ig ? 'https://www.instagram.com/' + selectedMember.ig.replace('@', '') : '#'" 
+               target="_blank" rel="noopener noreferrer"
+               class="btn-shimmer flex items-center justify-center gap-2 w-full py-4 rounded-2xl font-bold text-black mt-auto transition-transform hover:scale-[1.02]"
+               style="background:linear-gradient(135deg,#00ff88,#00cc6a);box-shadow:0 10px 25px rgba(0,255,136,0.25)">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                Lihat Instagram
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="py-10 text-center" style="border-top:1px solid rgba(0,255,136,0.08)">
+    <div class="flex items-center justify-center gap-3 mb-3">
+        <div class="w-8 h-8 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#00ff88,#00994d)">🎓</div>
+        <span class="font-display font-black text-lg text-white">REGE<span style="color:#00ff88">NOSA</span></span>
+    </div>
+    <p class="text-white/30 text-sm">© 2024 XII IIK Digital Archive. Made with 💚 by TwinzDev</p>
+</footer>
+</body>
+</html>

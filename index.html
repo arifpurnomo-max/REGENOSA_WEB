@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="id"
+x-data="{
+    darkMode: true,
+    showWelcome: true,
+    mobileMenu: false,
+    showModal: false,
+    showLightbox: false,
+    activeImg: '',
+    selectedMember: {},
+    showSuccess: false,
+    msgSearch: '',
+    msgFilter: 'semua',
+    msgForm: { name: '', role: '', pesan: '' },
+    messages: [
+        { id: 1, name: 'Wali Kelas — Ibu Toen Sa\'adah', role: 'Wali Kelas', pesan: 'Kalian adalah kelas yang paling berkesan sepanjang karir saya. Tetaplah rendah hati, terus belajar, dan kejar mimpi kalian setinggi langit! Ibu selalu bangga dengan kalian.', emoji: '👩‍🏫', badge: 'Guru', time: '2 jam lalu', reactions: {love: 24, clap: 18, fire: 12}, pinned: true },
+        { id: 2, name: 'Ust. Sofyan Abdul H', role: 'Guru', pesan: 'Tiga tahun bersama kalian adalah kenangan yang tidak akan pernah bisa tergantikan. Sukses selalu, REGENOSA! Kalian luar biasa 💚', emoji: '🎓', badge: 'Guru', time: '1 hari lalu', reactions: {love: 15, clap: 9, fire: 7}, pinned: false }
+    ],
+    addReaction(msgId, type) {
+        const msg = this.messages.find(m => m.id === msgId);
+        if (msg) msg.reactions[type]++;
+    },
+    submitMsg() {
+        if (!this.msgForm.name || !this.msgForm.pesan) return;
+        const badgeMap = { 'Alumni': 'Alumni', 'Guru': 'Guru', 'Orang Tua': 'Orang Tua', 'Adik Kelas': 'Adik Kelas', 'Teman': 'Teman', 'Anggota Kelas': 'Anggota' };
+        this.messages.unshift({
+            id: Date.now(),
+            name: this.msgForm.name,
+            role: this.msgForm.role || 'Umum',
+            pesan: this.msgForm.pesan,
+            emoji: '📍',
+            badge: badgeMap[this.msgForm.role] || 'Umum',
+            time: 'Baru saja',
+            reactions: { love: 0, clap: 0, fire: 0 },
+            pinned: false
+        });
+        this.msgForm = { name: '', role: '', pesan: '' };
+        this.showSuccess = true;
+        setTimeout(() => this.showSuccess = false, 3000);
+    },
+    get filteredMsgs() {
+        return this.messages.filter(m => {
+            const matchSearch = m.name.toLowerCase().includes(this.msgSearch.toLowerCase()) || m.pesan.toLowerCase().includes(this.msgSearch.toLowerCase());
+            const matchFilter = this.msgFilter === 'semua' || m.badge.toLowerCase() === this.msgFilter.toLowerCase();
+            return matchSearch && matchFilter;
+        });
+    },
+    gallery: [
+        'images/pelepasannn.jpeg',
+        'images/angkatan.jpeg',
+        'images/bersih.jpeg',
+        'images/kelasss.jpeg',
+        'images/bu evaa.jpeg',
+        'images/ldks.jpeg',
+        'images/bukber alumnii.jpeg',
+    ],
+    squad: [
+        { name: 'M.Firzan Husairi', role: 'Ketua Kelas', bio: 'Memimpin dengan hati dan dedikasi.', ig: '@mfirzanhusairi', img: 'images/Firzan.png', emoji: '👑', hobi: 'Gamer, Streamer', cita: 'Ulama besar' },
+        { name: 'Fauzan Al-anshari', role: 'Wakil Ketua Kelas', bio: 'Dingin tetapi bukan hujan tapi Fauzan.', ig: '@fa.uzan979', img: 'images/Fauzan.jpeg', emoji: '👑', hobi: 'Hikking', cita: 'Bozz Besar' },
+
+        { name: 'Fadila Nur F', role: 'Sekretaris', bio: 'Saya adalah seorang sekretaris yang sangat rapi.', ig: '@handmade_bydilla', img: 'images/Fadila.jpeg', emoji: '📝',  hobi: 'Menabung, Memasak dll', cita: 'MasterKreativity' },
+        { name: 'Deswina Dzuannur A', role: 'Sekretaris', bio: 'Jangan terlalu berisik lagi sibuk', ig: '@deswinadn', img: 'images/Deswina.jpeg', emoji: '📝', hobi: 'Membaca, Menulis, Menghapal,Mengajar', cita: 'Guru' },
+        
+        { name: 'Zahra Syakira', role: 'Bendahara', bio: 'Uang kas adalah segalanya.', ig: '@zahrasyakira_09', img: 'images/Zahra.jpeg', emoji: '💰', hobi: 'Belajar, Memanah, dll', cita: 'Menjadi orang bahagia syukses dan shalihah'},
+        { name: 'Yumna Nailah M.Z', role: 'Bendahara', bio: 'Uang menjadikan kita kaya.', ig: '@nailahmtzh_', img: 'images/Yumna.jpeg', emoji: '💰', hobi: 'Membaca, Belajar, Editing', cita: 'Wanita Sholihah'},
+        
+        { name: 'M.Hasbi', role: 'Pendidikan', bio: 'Ilmu adalah pengetahuan.', ig: '@mhmd_hassbi', img: 'images/Hasbi.jpeg', emoji: '📚', hobi: 'Belajar macam-macam bahasa kecuali bhs semut', cita: 'Pengen ke Jepang' },
+        { name: 'Wini Martiani', role: 'Pendidikan', bio: 'pintar dengan ilmu dan bodoh dng kemasalan.', ig: '@diary_wini', img: 'images/Wini.jpeg', emoji: '📚', hobi: 'Menulis dan Kulineran', cita: 'Penulis dan Enterpreneur' },
+
+        { name: 'M.Akhdan', role: 'Keamanan', bio: 'Senyum adalah senjataku.', ig: '@muhammad.akhdan_', img: 'images/Akhdan.jpeg', emoji: '⚔️', hobi: 'Berjualan', cita: 'Pemuda yang syukses' },
+        { name: 'Nabila Salma S', role: 'Keamanan', bio: 'Ketertiban adalah kebahagiaan.', ig: '@nabila_salma_s', img: 'images/Nabila.jpeg', emoji: '⚔️', hobi: 'Belajar', cita: 'Dosen Muda yang Smart' },
+
+        { name: 'Jenisa Bilqis S', role: 'Kebersiahan', bio: 'Siap sedia selalu!', ig: '@jenisa_bilqis', img: 'images/Jenisa.jpeg', emoji: '🗑️', hobi: 'Nonton Drakor, Dracin, Drasun', cita: 'Guru Matematika' },
+        { name: 'Deaz Hizbiyah R', role: 'Kebersiahan', bio: 'Bersih rapih selalu!', ig: '@deazhizbiyah', img: 'images/Deaz.jpeg', emoji: '🗑️', hobi: 'Membaca, Menulis, Bercetita', cita: 'Penulis dan Dosen muda' },
+
+        { name: 'Gilang Herdiansyah', role: 'Sosial', bio: 'Kepedulian adalah tindakan terbaik.', ig: '@gilzz_041', img: 'images/Gilang.jpeg', emoji: '🤝', hobi: 'Public Speaking, Vlog', cita: 'vloger ahli firsafat'},
+        { name: 'Vani Nur R', role: 'Sosial', bio: 'Cintai semua orang.', ig: '@vanninr_', img: 'images/Vani.jpeg', emoji: '🤝', hobi: 'Belajar Menyanyi', cita: 'Musisi Idol' },
+
+        { name: 'M.Nizar Al-abdani', role: 'Dokumentasi', bio: 'Abadikan setiap momen yang terindah.', ig: '@nizaralbd_', img: 'images/Nizar.jpeg', emoji: '📸', hobi: 'Akustik,Hiking,Racing', cita: 'Mahkamah Konstitusi atau Hakim' },
+        { name: 'Desti Nurul F', role: 'Dokumentasi', bio: 'Cintai momen-momen indah.', ig: '@destinurul_', img: 'images/Desti.jpeg', emoji: '📸', hobi: 'Membaca, Menulis, Mengajar', cita: 'Guru TK' }
+    ]
+}" :class="{ 'dark': darkMode }" class="overflow-x-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REGENOSA | XII IIK Digital Web</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="images/logo.jpeg" type="image/x-icon">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Syne', 'sans-serif'],
+                        body: ['DM Sans', 'sans-serif']
+                    },
+                    colors: {
+                        neon: '#00ff88',
+                        neonDim: '#00cc6a',
+                        dark: '#050a0e',
+                        card: '#0d1117'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        
+        * { font-family: 'DM Sans', sans-serif; }
+        h1, h2, h3, h4, .font-display { font-family: 'Syne', sans-serif; }
+
+        html { scroll-behavior: smooth; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050a0e; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #00ff88, #00cc6a); border-radius: 10px; }
+
+        /* Neon glow effects */
+        .neon-glow { box-shadow: 0 0 20px rgba(0,255,136,0.3), 0 0 60px rgba(0,255,136,0.1); }
+        .neon-text-glow { text-shadow: 0 0 20px rgba(0,255,136,0.5), 0 0 40px rgba(0,255,136,0.2); }
+        .neon-border { border: 1px solid rgba(0,255,136,0.3); }
+
+        /* Animated gradient bg */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .animated-gradient {
+            background: linear-gradient(-45deg, #050a0e, #0d1117, #00200e, #050a0e);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-12px) rotate(1deg); }
+            66% { transform: translateY(-6px) rotate(-1deg); }
+        }
+        .float { animation: float 6s ease-in-out infinite; }
+        .float-delay { animation: float 6s ease-in-out infinite 2s; }
+        .float-delay-2 { animation: float 6s ease-in-out infinite 4s; }
+
+        /* Pulse ring */
+        @keyframes pulseRing {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        .pulse-ring::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: inherit;
+            border: 2px solid #00ff88;
+            animation: pulseRing 2s ease-out infinite;
+        }
+
+        /* Scan line effect */
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+        .scan-line {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0,255,136,0.3), transparent);
+            animation: scan 4s linear infinite;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Marquee */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .marquee-inner { animation: marquee 20s linear infinite; display: flex; white-space: nowrap; }
+
+        /* Card hover effect */
+        /* Squad card image hover fix */
+.squad-card img {
+    filter: grayscale(100%);
+    transition: filter 0.5s ease, transform 0.5s ease;
+}
+.squad-card:hover img {
+    filter: grayscale(0%);
+    transform: scale(1.08);
+}
+.squad-card .img-overlay {
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+.squad-card:hover .img-overlay {
+    opacity: 1;
+}
+
+/* Fixed image container — same ratio everywhere */
+.card-img-wrap {
+    position: relative;
+    width: 100%;
+    padding-top: 110%;
+    overflow: hidden;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    background: rgba(0,255,136,0.05);
+}
+.card-img-wrap img,
+.card-img-wrap .img-overlay {
+    position: absolute;
+    inset: 0;
+}
+
+        /* Grain texture overlay */
+        .grain::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.4;
+        }
+
+        /* Timeline dot */
+        .timeline-dot {
+            position: relative;
+        }
+        .timeline-dot::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            border: 2px solid rgba(0,255,136,0.4);
+            animation: pulseRing 2s ease-out infinite;
+        }
+
+        /* Glitch effect on hover */
+        @keyframes glitch {
+            0% { clip-path: inset(0 0 100% 0); transform: translate(0); }
+            20% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 1px); }
+            40% { clip-path: inset(50% 0 30% 0); transform: translate(3px, -1px); }
+            60% { clip-path: inset(70% 0 10% 0); transform: translate(-2px, 2px); }
+            80% { clip-path: inset(90% 0 0 0); transform: translate(2px, -2px); }
+            100% { clip-path: inset(100% 0 0 0); transform: translate(0); }
+        }
+
+        /* Message card */
+        .msg-card {
+            background: linear-gradient(135deg, rgba(13,17,23,0.8), rgba(0,255,136,0.03));
+            border: 1px solid rgba(0,255,136,0.1);
+            transition: all 0.3s;
+            animation: fadeInUp 0.4s ease forwards;
+            opacity: 0;
+        }
+        .msg-card:hover { border-color: rgba(0,255,136,0.25); transform: translateY(-2px); }
+        .msg-card.pinned { border-color: rgba(0,255,136,0.3); background: rgba(0,255,136,0.04); }
+        @keyframes fadeInUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+        .reaction-btn { transition: all 0.2s; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+        .reaction-btn:hover { background: rgba(0,255,136,0.1); border-color: rgba(0,255,136,0.3); transform: scale(1.1); }
+        .reaction-btn:active { transform: scale(0.95); }
+        .msg-filter-btn { transition: all 0.2s; border: 1px solid rgba(0,255,136,0.15); background: rgba(0,255,136,0.04); color: rgba(255,255,255,0.5); }
+        .msg-filter-btn.active, .msg-filter-btn:hover { background: rgba(0,255,136,0.15); border-color: rgba(0,255,136,0.4); color: #00ff88; }
+        .badge-Guru { background: rgba(0,255,136,0.12); color: #00ff88; border: 1px solid rgba(0,255,136,0.2); }
+        .badge-Alumni { background: rgba(96,165,250,0.12); color: #60a5fa; border: 1px solid rgba(96,165,250,0.2); }
+        .badge-Teman, .badge-Umum { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.1); }
+        .badge-Anggota { background: rgba(34,197,94,0.12); color: #22c55e; border: 1px solid rgba(34,197,94,0.2); }
+        .badge-Adik { background: rgba(167,139,250,0.12); color: #a78bfa; border: 1px solid rgba(167,139,250,0.2); }
+        .badge-Orang { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
+        .input-msg { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: white; transition: all 0.3s; }
+        .input-msg:focus { outline: none; border-color: rgba(0,255,136,0.4); box-shadow: 0 0 20px rgba(0,255,136,0.08); }
+        @keyframes slideDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+        .success-toast { animation: slideDown 0.4s ease; }
+
+        /* Nav link underline */
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0; right: 0;
+            height: 2px;
+            background: #00ff88;
+            transform: scaleX(0);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 2px;
+        }
+        .nav-link:hover::after { transform: scaleX(1); }
+
+        /* Button shimmer */
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) skewX(-15deg); }
+            100% { transform: translateX(200%) skewX(-15deg); }
+        }
+        .btn-shimmer {
+            overflow: hidden;
+            position: relative;
+        }
+        .btn-shimmer::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transform: translateX(-100%) skewX(-15deg);
+        }
+        .btn-shimmer:hover::after {
+            animation: shimmer 0.6s ease;
+        }
+
+        /* Welcome screen particles */
+        @keyframes particle {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+        .particle {
+            position: absolute;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #00ff88;
+            animation: particle linear infinite;
+        }
+
+        /* Section reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stats counter */
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .stat-item { animation: countUp 0.6s ease forwards; }
+
+        /* Noise bg pattern */
+        .bg-grid {
+            background-image: 
+                linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Squad card image hover fix */
+        .squad-card img {
+    filter: grayscale(100%);  /* Gambar hitam putih saat normal */
+    transition: filter 0.5s ease, transform 0.5s ease;
+}
+.squad-card:hover img {
+    filter: grayscale(0%);     /* Berwarna saat di-hover */
+    transform: scale(1.08);    /* Zoom sedikit saat di-hover */
+}
+        .squad-card .img-overlay {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .squad-card:hover .img-overlay {
+            opacity: 1;
+        }
+        .card-img-wrap {
+    position: relative;
+    width: 100%;
+    padding-top: 110%;        /* Rasio portrait (lebih tinggi dari lebar) */
+    overflow: hidden;         /* Memotong gambar yang overflow */
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    background: rgba(0,255,136,0.05);
+}
+.card-img-wrap img,
+.card-img-wrap .img-overlay {
+    position: absolute;
+    inset: 0;                 /* Posisi absolute menutupi container */
+}
+        [x-show="mobileMenu"] .mob-link { opacity: 1; transform: translateX(0); }
+        .mob-link:nth-child(1) { transition-delay: 0.1s; }
+        .mob-link:nth-child(2) { transition-delay: 0.15s; }
+        .mob-link:nth-child(3) { transition-delay: 0.2s; }
+        .mob-link:nth-child(4) { transition-delay: 0.25s; }
+        .mob-link:nth-child(5) { transition-delay: 0.3s; }
+        .mob-link:nth-child(6) { transition-delay: 0.35s; }
+    </style>
+</head>
+
+<body class="bg-[#050a0e] text-white overflow-x-hidden grain animated-gradient min-h-screen">
+
+<!-- Scan line fx -->
+<div class="scan-line"></div>
+
+<!-- SUCCESS TOAST -->
+<div x-show="showSuccess" x-cloak x-transition
+     class="fixed top-24 left-1/2 -translate-x-1/2 z-[200] success-toast">
+    <div class="flex items-center gap-3 px-6 py-4 rounded-2xl font-bold text-black"
+         style="background:#00ff88;box-shadow:0 0 30px rgba(0,255,136,0.4)">
+        <span class="text-xl">✅</span> Pesan berhasil dikirim! Terima kasih 💚
+    </div>
+</div>
+
+<!-- ===================== WELCOME SCREEN ===================== -->
+<template x-if="showWelcome">
+    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-[#050a0e] overflow-hidden">
+        <!-- Particles -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="particle" style="left:10%;animation-duration:4s;animation-delay:0s;"></div>
+            <div class="particle" style="left:20%;animation-duration:5s;animation-delay:0.5s;width:4px;height:4px;opacity:0.5;"></div>
+            <div class="particle" style="left:35%;animation-duration:3.5s;animation-delay:1s;background:#00cc6a;"></div>
+            <div class="particle" style="left:50%;animation-duration:4.5s;animation-delay:0.2s;width:8px;height:8px;"></div>
+            <div class="particle" style="left:65%;animation-duration:3s;animation-delay:0.8s;width:4px;height:4px;"></div>
+            <div class="particle" style="left:75%;animation-duration:5.5s;animation-delay:0.3s;opacity:0.6;"></div>
+            <div class="particle" style="left:88%;animation-duration:4s;animation-delay:1.2s;background:#00cc6a;width:3px;height:3px;"></div>
+        </div>
+
+        <!-- Radial glow -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div class="w-[600px] h-[600px] rounded-full" style="background: radial-gradient(circle, rgba(0,255,136,0.08) 0%, transparent 70%);"></div>
+        </div>
+
+        <div class="relative text-center px-8 max-w-lg">
+            <!-- Logo icon -->
+            <div class="relative inline-block mb-8">
+                <div class="w-24 h-24 rounded-[2rem] flex items-center justify-center float" 
+                     style="background: linear-gradient(135deg, #00ff88, #00994d); box-shadow: 0 0 40px rgba(0,255,136,0.4), 0 0 80px rgba(0,255,136,0.2);">
+                    <span class="text-4xl">🎓</span>
+                </div>
+                <div class="absolute -inset-3 rounded-[2.5rem] border border-neon/20 animate-ping" style="animation-duration:2s;"></div>
+            </div>
+
+            <div class="mb-2">
+                <span class="text-neon text-xs font-bold tracking-[0.4em] uppercase px-4 py-1 rounded-full border border-neon/20 bg-neon/5">
+                    ✦ Digital Archive ✦
+                </span>
+            </div>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-display font-black text-white mt-4 mb-2 tracking-tight">IIK REGENOSA</h1>
+            <p class="text-white/40 mb-10 font-body">Arsip digital kenangan kelas XII yang tak terlupakan.</p>
+
+            <!-- CTA button -->
+            <button @click="showWelcome = false" 
+                class="btn-shimmer group relative px-12 py-4 rounded-2xl font-display font-bold text-lg text-black transition-all duration-300 hover:scale-105 active:scale-95"
+                style="background: linear-gradient(135deg, #00ff88, #00cc6a); box-shadow: 0 0 30px rgba(0,255,136,0.4);">
+                Buka Gerbang 
+                <span class="ml-2 group-hover:ml-4 transition-all">→</span>
+            </button>
+
+            <p class="mt-6 text-white/20 text-xs">2022 — 2024 · XII IIK</p>
+        </div>
+    </div>
+</template>
+
+<!-- ===================== NAVBAR ===================== -->
+<nav class="fixed top-0 w-full z-50" style="background: rgba(5,10,14,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,255,136,0.08);">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 h-18 flex justify-between items-center py-4">
+        <!-- Logo -->
+        <a href="#home" class="flex items-center gap-3 group">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center text-lg transition-transform group-hover:scale-110"
+                 style="background: linear-gradient(135deg, #00ff88, #00994d); box-shadow: 0 0 15px rgba(0,255,136,0.3);">
+                🎓
+            </div>
+            <span class="font-display font-black text-xl tracking-tighter text-white">REGE<span style="color:#00ff88;">NOSA</span></span>
+        </a>
+
+        <!-- Desktop nav -->
+        <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-white/60">
+            <a href="#home" class="nav-link hover:text-neon transition-colors">Beranda</a>
+            <a href="#story" class="nav-link hover:text-neon transition-colors">Story</a>
+            <a href="#squad" class="nav-link hover:text-neon transition-colors">The Squad</a>
+            <a href="#gallery" class="nav-link hover:text-neon transition-colors">Gallery</a>
+            <a href="#timeline" class="nav-link hover:text-neon transition-colors">Timeline</a>
+            <a href="#messages" class="nav-link hover:text-neon transition-colors">Pesan</a>
+        </div>
+
+        <!-- Right controls -->
+        <div class="flex items-center gap-3">
+            <a href="#messages" class="hidden lg:flex btn-shimmer items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-black transition-all hover:scale-105"
+               style="background: linear-gradient(135deg, #00ff88, #00cc6a); box-shadow: 0 0 20px rgba(0,255,136,0.3);">
+                <span>💬</span> Tinggalkan Pesan
+            </a>
+
+            <!-- Mobile hamburger -->
+            <button @click="mobileMenu = true" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl transition-all"
+                    style="background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.2);">
+                <svg class="w-5 h-5 text-neon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- ===================== MOBILE MENU ===================== -->
+<div x-show="mobileMenu" x-cloak
+     x-transition:enter="transition ease-out duration-300"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-200"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0"
+     class="fixed inset-0 z-[90] lg:hidden bg-grid"
+     style="background-color: #050a0e;">
+
+    <!-- Glow bg -->
+    <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at top left, rgba(0,255,136,0.08) 0%, transparent 60%);"></div>
+
+    <!-- Header -->
+    <div class="flex justify-between items-center px-6 py-5" style="border-bottom: 1px solid rgba(0,255,136,0.1);">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
+                 style="background: linear-gradient(135deg, #00ff88, #00994d);">🎓</div>
+            <span class="font-display font-black text-xl text-white">REGE<span style="color:#00ff88;">NOSA</span></span>
+        </div>
+        <button @click="mobileMenu = false" class="w-10 h-10 flex items-center justify-center rounded-xl text-white/60 hover:text-neon transition-colors"
+                style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Accent line -->
+    <div class="h-[1px]" style="background: linear-gradient(90deg, transparent, #00ff88, transparent);"></div>
+
+    <!-- Links Navbar Active -->
+    <div class="flex flex-col px-6 pt-10 gap-1">
+        <a @click="mobileMenu = false" href="#home" class="mob-link flex justify-between items-center py-4 text-2xl font-display font-bold text-white hover:text-neon transition-colors group"
+           style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <span>🏠 Beranda</span>
+            <span class="text-neon text-base opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+        </a>
+        <a @click="mobileMenu = false" href="#story" class="mob-link flex justify-between items-center py-4 text-2xl font-display font-bold text-white hover:text-neon transition-colors group"
+           style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <span>📖 Story</span>
+            <span class="text-neon text-base opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+        </a>
+        <a @click="mobileMenu = false" href="#squad" class="mob-link flex justify-between items-center py-4 text-2xl font-display font-bold text-white hover:text-neon transition-colors group"
+           style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <span>👥 The Squad</span>
+            <span class="text-neon text-base opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+        </a>
+        <a @click="mobileMenu = false" href="#gallery" class="mob-link flex justify-between items-center py-4 text-2xl font-display font-bold text-white hover:text-neon transition-colors group"
+           style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <span>📸 Gallery</span>
+            <span class="text-neon text-base opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+        </a>
+        <a @click="mobileMenu = false" href="#timeline" class="mob-link flex justify-between items-center py-4 text-2xl font-display font-bold text-white hover:text-neon transition-colors group"
+           style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <span>🗓 Timeline</span>
+            <span class="text-neon text-base opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+        </a>
+        <a @click="mobileMenu = false" href="#messages" class="mob-link flex justify-between items-center py-4 text-2xl font-display font-bold text-white hover:text-neon transition-colors group">
+            <span>💬 Pesan</span>
+            <span class="text-neon text-base opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+        </a>
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="absolute bottom-10 left-6 right-6">
+        <a @click="mobileMenu = false" href="#messages" 
+           class="btn-shimmer flex items-center justify-center gap-2 w-full py-4 rounded-2xl font-display font-bold text-black text-lg"
+           style="background: linear-gradient(135deg, #00ff88, #00cc6a); box-shadow: 0 0 30px rgba(0,255,136,0.3);">
+            💌 Tinggalkan Pesan
+        </a>
+        <p class="text-center text-white/20 text-xs mt-4 italic">XII IIK — REGENOSA © 2024</p>
+    </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<section id="home" class="min-h-screen relative flex items-center justify-center px-4 pt-20 pb-20 md:pb-32 overflow-hidden bg-grid">
+
+    <!-- Background glow orbs -->
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 rounded-full pointer-events-none float" style="background: radial-gradient(circle, rgba(0,255,136,0.06) 0%, transparent 70%);"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full pointer-events-none float-delay" style="background: radial-gradient(circle, rgba(0,200,100,0.04) 0%, transparent 70%);"></div>
+
+    <!-- Hero image faint -->
+    <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1541339907198-e08756ebafe1?q=80&w=2070" 
+             class="w-full h-full object-cover" style="opacity: 0.06;">
+        <div class="absolute inset-0" style="background: linear-gradient(to bottom, transparent 30%, #050a0e 100%);"></div>
+    </div>
+
+    <!-- Floating emojis decoration -->
+    <div class="absolute top-32 left-8 text-3xl float opacity-50 hidden md:block">🎓</div>
+    <div class="absolute top-48 right-16 text-2xl float-delay opacity-50 hidden md:block">⭐</div>
+    <div class="absolute bottom-32 left-20 text-2xl float-delay-2 opacity-50 hidden md:block">✨</div>
+    <div class="absolute bottom-40 right-10 text-3xl float opacity-50 hidden md:block">🚀</div>
+
+    <div class="relative z-10 text-center w-full max-w-5xl">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 text-sm font-medium"
+             style="background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.2); color: #00ff88;">
+            <span class="w-2 h-2 rounded-full bg-neon animate-pulse"></span>
+            XII IIK · REGENOSA · 2022–2024
+        </div>
+
+        <!-- Main heading -->
+        <h1 class="font-display font-black leading-[0.95] tracking-tighter mb-6">
+            <span class="block text-[2.8rem] sm:text-6xl md:text-8xl lg:text-9xl text-white">ABADI</span>
+            <span class="block text-[2.8rem] sm:text-6xl md:text-8xl lg:text-9xl" style="color: #00ff88; text-shadow: 0 0 40px rgba(0,255,136,0.4);">DALAM</span>
+            <span class="block text-[2.8rem] sm:text-6xl md:text-8xl lg:text-9xl text-white">KENANGAN<span style="color:#00ff88;">.</span></span>
+        </h1>
+
+        <p class="text-white/40 max-w-lg mx-auto mb-12 text-lg leading-relaxed px-4">
+            Membangun masa depan dari ruang kelas XII IIK yang penuh inspirasi, kreativitas, dan solidaritas tanpa batas.
+        </p>
+
+        <!-- CTA buttons -->
+        <div class="flex flex-col sm:flex-row justify-center gap-4 px-4 mb-8 md:mb-0">
+            <a href="#squad" class="btn-shimmer group flex items-center justify-center gap-3 px-10 py-4 rounded-2xl font-display font-bold text-black text-lg transition-all hover:scale-105 active:scale-95"
+               style="background: linear-gradient(135deg, #00ff88, #00cc6a); box-shadow: 0 0 30px rgba(0,255,136,0.35);">
+                <span>👥</span> Lihat Anggota
+                <span class="group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+            <a href="#messages" class="group flex items-center justify-center gap-3 px-10 py-4 rounded-2xl font-display font-bold text-white text-lg transition-all hover:scale-105 active:scale-95"
+               style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);">
+                <span>💬</span> Tinggalkan Pesan
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== MARQUEE DIVIDER ===================== -->
+<div class="py-6 overflow-hidden" style="border-top: 1px solid rgba(0,255,136,0.08); border-bottom: 1px solid rgba(0,255,136,0.08); background: rgba(0,255,136,0.02);">
+    <div class="marquee-inner gap-12 text-white/20 text-sm font-display font-bold tracking-widest uppercase flex items-center">
+        <template x-for="i in 8">
+            <div class="flex items-center gap-12 shrink-0">
+                <span>✦ XII IIK</span>
+                <span style="color: rgba(0,255,136,0.4);">REGENOSA</span>
+                <span>✦ 2024</span>
+                <span style="color: rgba(0,255,136,0.4);">KENANGAN ABADI</span>
+                <span>✦ SOLIDARITAS</span>
+                <span style="color: rgba(0,255,136,0.4);">RELIGION · SMART · CLASS</span>
+            </div>
+        </template>
+    </div>
+</div>
+
+<!-- ===================== STATS ===================== -->
+<section class="py-16 px-4 md:px-8 max-w-7xl mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="p-6 rounded-2xl text-center stat-item" style="background: rgba(0,255,136,0.04); border: 1px solid rgba(0,255,136,0.12);">
+            <div class="text-4xl font-display font-black mb-1" style="color: #00ff88;">29</div>
+            <div class="text-white/40 text-sm">Anggota Kelas</div>
+        </div>
+        <div class="p-6 rounded-2xl text-center stat-item" style="background: rgba(0,255,136,0.04); border: 1px solid rgba(0,255,136,0.12); animation-delay: 0.1s;">
+            <div class="text-4xl font-display font-black mb-1" style="color: #00ff88;">3</div>
+            <div class="text-white/40 text-sm">Tahun Bersama</div>
+        </div>
+        <div class="p-6 rounded-2xl text-center stat-item" style="background: rgba(0,255,136,0.04); border: 1px solid rgba(0,255,136,0.12); animation-delay: 0.2s;">
+            <div class="text-4xl font-display font-black mb-1" style="color: #00ff88;">∞</div>
+            <div class="text-white/40 text-sm">Kenangan Indah</div>
+        </div>
+        <div class="p-6 rounded-2xl text-center stat-item" style="background: rgba(0,255,136,0.04); border: 1px solid rgba(0,255,136,0.12); animation-delay: 0.3s;">
+            <div class="text-4xl font-display font-black mb-1" style="color: #00ff88;">1</div>
+            <div class="text-white/40 text-sm">Keluarga Besar</div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ===================== STORY ===================== -->
+<section id="story" class="py-24 max-w-7xl mx-auto px-4 md:px-8">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+        <!-- Text -->
+        <div>
+            <div class="flex items-center gap-3 mb-6">
+                <div class="h-px flex-1" style="background: linear-gradient(90deg, #00ff88, transparent);"></div>
+                <span class="text-neon text-xs font-bold tracking-[0.3em] uppercase">Our Story</span>
+                <div class="h-px flex-1" style="background: linear-gradient(90deg, transparent, #00ff88);"></div>
+            </div>
+            <h2 class="font-display font-black text-4xl md:text-5xl text-white leading-tight mb-6">
+                Satu Ruang,<br>
+                <span style="color: #00ff88;">Seribu Cerita.</span>
+            </h2>
+            <p class="text-white/50 leading-relaxed mb-8">
+                Berawal dari pertemuan tak terduga di gerbang sekolah, kelas ini bertumbuh menjadi rumah bagi 29 individu unik. Nama <strong class="text-neon">"REGENOSA"</strong> — Religion Generasi Of Smart Class — bukan sekadar nama biasa, tapi simbol ambisi kami untuk selalu terdepan dalam kecerdasan dan keagamaan.
+            </p>
+
+            <!-- Cards -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="p-5 rounded-2xl" style="background: rgba(0,255,136,0.05); border: 1px solid rgba(0,255,136,0.15);">
+                    <div class="text-2xl mb-2">🎯</div>
+                    <h3 class="font-display font-bold text-neon text-lg mb-1">Visi</h3>
+                    <p class="text-sm text-white/50 italic">Mencetak generasi unggul yang berintegritas dan kreatif.</p>
+                </div>
+                <div class="p-5 rounded-2xl" style="background: rgba(0,255,136,0.05); border: 1px solid rgba(0,255,136,0.15);">
+                    <div class="text-2xl mb-2">🤝</div>
+                    <h3 class="font-display font-bold text-neon text-lg mb-1">Misi</h3>
+                    <p class="text-sm text-white/50 italic">Menjaga solidaritas tanpa batas dalam keberagaman.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image -->
+        <div class="relative">
+            <div class="absolute -inset-4 rounded-3xl opacity-20 blur-2xl" style="background: linear-gradient(135deg, #00ff88, #00994d);"></div>
+            <div class="relative rounded-3xl overflow-hidden" style="border: 1px solid rgba(0,255,136,0.2);">
+                <img src="images/WhatsApp Image 2026-03-20 at 17.31.55.jpeg" 
+                     class="w-full h-80 md:h-[400px] object-cover grayscale hover:grayscale-0 transition duration-700">
+                <!-- Overlay tag -->
+                <div class="absolute bottom-4 left-4 right-4">
+                    <div class="px-4 py-3 rounded-xl backdrop-blur-md" style="background: rgba(5,10,14,0.8); border: 1px solid rgba(0,255,136,0.2);">
+                        <p class="text-xs text-neon font-bold uppercase tracking-widest mb-0.5">XII IIK · REGENOSA</p>
+                        <p class="text-white/60 text-xs"> 29 Individu · 1 Keluarga Besar</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== SQUAD ===================== -->
+<!-- ===================== SQUAD ===================== -->
+<section id="squad" class="py-24" style="background: rgba(0,255,136,0.02); border-top: 1px solid rgba(0,255,136,0.06); border-bottom: 1px solid rgba(0,255,136,0.06);">
+    <div class="max-w-7xl mx-auto px-4 md:px-8">
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <span class="text-neon text-xs font-bold tracking-[0.3em] uppercase">Pilar Kelas</span>
+            <h2 class="font-display font-black text-4xl md:text-5xl text-white mt-3 mb-3">The <span style="color:#00ff88;">Squad</span> 🔥</h2>
+            <p class="text-white/40">Wajah-wajah luar biasa di balik REGENOSA.</p>
+        </div>
+
+        <!-- Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+            <template x-for="member in squad" :key="member.name">
+                <div @click="selectedMember = member; showModal = true"
+                     class="squad-card rounded-3xl p-4 cursor-pointer"
+                     style="background:rgba(13,17,23,0.8);border:1px solid rgba(0,255,136,0.08);transition:all 0.4s cubic-bezier(0.175,0.885,0.32,1.275)">
+                    
+                    <!-- Emoji badge -->
+                    <div class="flex justify-end mb-3">
+                        <span class="text-2xl" x-text="member.emoji"></span>
+                    </div>
+                    
+                    <!-- Image container with fixed ratio -->
+                    <div class="card-img-wrap">
+                        <img :src="member.img" 
+                             class="absolute inset-0 w-full h-full object-cover object-top transition-all duration-500">
+                        
+                        <!-- Hover overlay gradient neon -->
+                        <div class="img-overlay absolute inset-0 flex items-end justify-center pb-4 opacity-0 transition-opacity duration-300"
+                             style="background:linear-gradient(to top, rgba(0,255,136,0.55) 0%, rgba(0,20,10,0.2) 55%, transparent 100%)">
+                            <span class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest text-black shadow-lg"
+                                  style="background:#00ff88; box-shadow:0 0 15px rgba(0,255,136,0.5)">✦ Detail</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Member info -->
+                    <h4 class="font-display font-bold text-white text-base leading-tight mb-1" x-text="member.name"></h4>
+                    <p class="text-xs font-bold uppercase tracking-wider mb-2" style="color:#00ff88" x-text="member.role"></p>
+                    <p class="text-xs text-white/40 italic line-clamp-1" x-text="'&quot;' + member.bio + '&quot;'"></p>
+                </div>
+            </template>
+        </div>
+
+        <!-- CTA Button squad Team -->
+        <div class="text-center mt-14">
+            <p class="text-white/30 text-sm mb-5">Hanya menampilkan sebagian anggota · Total 29 orang</p>
+            <a href="squad.html"
+               class="btn-shimmer inline-flex items-center gap-3 px-10 py-4 rounded-2xl font-display font-bold text-black text-lg transition-all hover:scale-105 active:scale-95"
+               style="background: linear-gradient(135deg, #00ff88, #00cc6a); box-shadow: 0 0 30px rgba(0,255,136,0.35);">
+                👥 Lihat Semua Anggota
+                <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== GALLERY ===================== -->
+<section id="gallery" class="py-24 max-w-7xl mx-auto px-4 md:px-8">
+    <div class="text-center mb-16">
+        <span class="text-neon text-xs font-bold tracking-[0.3em] uppercase">Memories</span>
+        <h2 class="font-display font-black text-4xl md:text-5xl text-white mt-3">Gallery <span style="color:#00ff88;">Momen</span> 📸</h2>
+    </div>
+
+    <div class="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5 mb-12">
+        <template x-for="img in gallery" :key="img">
+            <div class="relative group overflow-hidden rounded-2xl cursor-pointer break-inside-avoid"
+                 @click="activeImg = img; showLightbox = true"
+                 style="border: 1px solid rgba(0,255,136,0.1);">
+                <img :src="img + '?q=80&w=600'" class="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                     style="background: rgba(0,255,136,0.15);">
+                    <span class="px-4 py-2 rounded-xl font-bold text-xs uppercase backdrop-blur-md text-[#050a0e]"
+                          style="background: #00ff88;">🔍 Perbesar</span>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <!-- CTA Button Gallery-full -->
+    <div class="text-center">
+        <a href="gallery-full.html" class="btn-shimmer inline-flex items-center gap-3 px-10 py-4 rounded-2xl font-display font-bold text-white transition-all hover:scale-105"
+           style="background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.2);">
+            📂 Jelajahi Semua Foto
+            <svg class="w-5 h-5 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+        </a>
+    </div>
+</section>
+
+<!-- ===================== TIMELINE ===================== -->
+<section id="timeline" class="py-24 relative overflow-hidden" style="background: linear-gradient(135deg, #00ff88 0%, #00994d 50%, #006b35 100%);">
+    <!-- Pattern overlay -->
+    <div class="absolute inset-0 bg-grid opacity-20"></div>
+
+    <div class="relative max-w-4xl mx-auto px-4 md:px-8">
+        <div class="text-center mb-16">
+            <h2 class="font-display font-black text-4xl md:text-5xl text-black">Timeline Perjalanan 🗓</h2>
+            <p class="text-black/60 mt-2">Jejak langkah yang tak terlupakan</p>
+        </div>
+
+        <div class="space-y-10 relative">
+            <!-- Line -->
+            <div class="absolute left-5 top-0 bottom-0 w-0.5 bg-black/20"></div>
+
+            <!-- Item 1 -->
+            <div class="relative pl-16">
+                <div class="absolute left-0 w-11 h-11 rounded-full flex items-center justify-center font-display font-black text-white text-sm timeline-dot"
+                     style="background: #050a0e; border: 2px solid rgba(0,0,0,0.3);">22</div>
+                <div class="p-6 rounded-2xl" style="background: rgba(0,0,0,0.12); border: 1px solid rgba(0,0,0,0.1);">
+                    <h3 class="text-xl font-display font-bold text-black mb-1">🌱 Awal Terbentuk (2022)</h3>
+                    <p class="text-black/70">Pertama kali berkumpul sebagai keluarga besar XII IIK. Kenalan, canggung, tapi langsung klik!</p>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="relative pl-16">
+                <div class="absolute left-0 w-11 h-11 rounded-full flex items-center justify-center font-display font-black text-white text-sm timeline-dot"
+                     style="background: #050a0e; border: 2px solid rgba(0,0,0,0.3);">23</div>
+                <div class="p-6 rounded-2xl" style="background: rgba(0,0,0,0.12); border: 1px solid rgba(0,0,0,0.1);">
+                    <h3 class="text-xl font-display font-bold text-black mb-1">🏆 Tahun Eksplorasi (2023)</h3>
+                    <p class="text-black/70">Memenangkan berbagai lomba, event sosial, dan menempa karakter satu sama lain.</p>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="relative pl-16">
+                <div class="absolute left-0 w-11 h-11 rounded-full flex items-center justify-center font-display font-black text-white text-sm timeline-dot"
+                     style="background: #050a0e; border: 2px solid rgba(0,0,0,0.3);">24</div>
+                <div class="p-6 rounded-2xl" style="background: rgba(0,0,0,0.12); border: 1px solid rgba(0,0,0,0.1);">
+                    <h3 class="text-xl font-display font-bold text-black mb-1">✨ Masa Akhir (2024)</h3>
+                    <p class="text-black/70">Babak terakhir. Air mata, tawa, dan janji abadi. Berpisah jalan, selamanya satu hati.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Button jelajahi timeline -->
+        <div class="text-center mt-14">
+            <p class="text-black/40 text-sm mb-5">Masih banyak momen yang belum tercerita...</p>
+            <a href="timeline.html"
+               class="inline-flex items-center gap-3 px-10 py-4 rounded-2xl font-display font-bold text-lg transition-all hover:scale-105 active:scale-95"
+               style="background: rgba(0,0,0,0.2); border: 2px solid rgba(0,0,0,0.2); color: #050a0e; backdrop-filter: blur(8px);">
+                🗓 Lihat Timeline Lengkap
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== MESSAGES ===================== -->
+<section id="messages" class="py-24 max-w-5xl mx-auto px-4 md:px-8">
+    <div class="text-center mb-12">
+        <span class="text-neon text-xs font-bold tracking-[0.3em] uppercase">Message Wall</span>
+        <h2 class="font-display font-black text-4xl md:text-5xl text-white mt-3">Tinggalkan <span style="color:#00ff88;">Kenangan</span> 💌</h2>
+        <p class="text-white/40 mt-2">Kata-katamu akan selalu diingat.</p>
+    </div>
+
+    <!-- FORM -->
+    <div class="rounded-3xl p-6 md:p-10 mb-10" style="background: rgba(13,17,23,0.8); border: 1px solid rgba(0,255,136,0.12);">
+        <h3 class="font-display font-bold text-xl text-white mb-6 text-center">✍️ Tulis Pesanmu</h3>
+        <form @submit.prevent="submitMsg()" class="space-y-4">
+            <div class="grid md:grid-cols-2 gap-4">
+                <input type="text" x-model="msgForm.name" placeholder="Nama Kamu 👤" required
+                       class="input-msg w-full px-5 py-4 rounded-2xl placeholder-white/30">
+                <select x-model="msgForm.role"
+                        class="input-msg w-full px-5 py-4 rounded-2xl appearance-none cursor-pointer">
+                    <option value="" class="bg-gray-900">Kamu sebagai... 🏷️</option>
+                    <option value="Alumni" class="bg-gray-900">🎓 Alumni</option>
+                    <option value="Guru" class="bg-gray-900">👨‍🏫 Guru</option>
+                    <option value="Orang Tua" class="bg-gray-900">🤱 Orang Tua</option>
+                    <option value="Adik Kelas" class="bg-gray-900">🌸 Adik Kelas</option>
+                    <option value="Teman" class="bg-gray-900">😊 Teman</option>
+                    <option value="Anggota Kelas" class="bg-gray-900">⭐ Anggota Kelas</option>
+                </select>
+            </div>
+            <textarea x-model="msgForm.pesan" placeholder="Tulis pesan atau kesan yang ingin kamu tinggalkan... 💭" rows="4" required
+                      class="input-msg w-full px-5 py-4 rounded-2xl placeholder-white/30 resize-none"></textarea>
+            <button type="submit" class="btn-shimmer w-full py-4 rounded-2xl font-display font-bold text-black text-lg transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    style="background: linear-gradient(135deg, #00ff88, #00cc6a); box-shadow: 0 0 30px rgba(0,255,136,0.3);">
+                💚 Kirim Pesan
+            </button>
+        </form>
+    </div>
+
+    <!-- SEARCH & FILTER -->
+    <div class="mb-8">
+        <div class="relative mb-4">
+            <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <input type="text" x-model="msgSearch" placeholder="Cari nama atau isi pesan..."
+                   class="input-msg w-full pl-12 pr-5 py-3.5 rounded-2xl placeholder-white/30">
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <template x-for="f in ['semua','Guru','Alumni','Orang Tua','Adik Kelas','Teman','Anggota']">
+                <button @click="msgFilter = f" :class="msgFilter === f ? 'active' : ''"
+                        class="msg-filter-btn px-4 py-2 rounded-full font-bold text-xs transition-all" x-text="f"></button>
+            </template>
+        </div>
+        <p class="text-white/30 text-xs mt-3">
+            Menampilkan <span style="color:#00ff88;font-weight:bold" x-text="filteredMsgs.length"></span> pesan
+        </p>
+    </div>
+
+
+    <!-- PINNED MESSAGE -->
+    <template x-for="msg in filteredMsgs.filter(m => m.pinned)" :key="'pin-' + msg.id">
+        <div class="msg-card pinned rounded-3xl p-6 mb-4 relative">
+            <div class="absolute top-4 right-4 flex items-center gap-1 text-xs font-bold" style="color:#00ff88">
+                <span>📌</span><span>Disematkan</span>
+            </div>
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl shrink-0"
+                     style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.2)" x-text="msg.emoji"></div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                        <p class="font-display font-bold" style="color:#00ff88" x-text="msg.name"></p>
+                        <span class="text-xs px-2 py-0.5 rounded-full font-bold" :class="'badge-' + msg.badge" x-text="msg.badge"></span>
+                    </div>
+                    <p class="italic text-white/80 leading-relaxed mb-4" x-text="'&quot;' + msg.pesan + '&quot;'"></p>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <button @click="addReaction(msg.id,'love')" class="reaction-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm">❤️ <span x-text="msg.reactions.love"></span></button>
+                        <button @click="addReaction(msg.id,'clap')" class="reaction-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm">👏 <span x-text="msg.reactions.clap"></span></button>
+                        <button @click="addReaction(msg.id,'fire')" class="reaction-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm">🔥 <span x-text="msg.reactions.fire"></span></button>
+                        <span class="text-white/20 text-xs ml-auto" x-text="'⏰ ' + msg.time"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- DIVIDER -->
+    <template x-if="filteredMsgs.some(m => m.pinned) && filteredMsgs.some(m => !m.pinned)">
+        <div class="flex items-center gap-4 my-6">
+            <div class="h-px flex-1" style="background:rgba(255,255,255,0.06)"></div>
+            <span class="text-white/30 text-xs uppercase tracking-widest">Pesan Lainnya</span>
+            <div class="h-px flex-1" style="background:rgba(255,255,255,0.06)"></div>
+        </div>
+    </template>
+
+    <!-- OTHER MESSAGES GRID -->
+    <div class="grid md:grid-cols-2 gap-4">
+        <template x-for="(msg, idx) in filteredMsgs.filter(m => !m.pinned)" :key="msg.id">
+            <div class="msg-card rounded-3xl p-6" :style="'animation-delay:' + (idx * 0.06 + 0.1) + 's'">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl shrink-0"
+                         style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)" x-text="msg.emoji"></div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-wrap items-center gap-2 mb-1">
+                            <p class="font-display font-bold text-white" x-text="msg.name"></p>
+                            <span class="text-xs px-2 py-0.5 rounded-full font-bold" :class="'badge-' + msg.badge" x-text="msg.badge"></span>
+                        </div>
+                        <p class="italic text-white/60 text-sm leading-relaxed mb-4 line-clamp-3" x-text="'&quot;' + msg.pesan + '&quot;'"></p>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button @click="addReaction(msg.id,'love')" class="reaction-btn flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs">❤️ <span x-text="msg.reactions.love"></span></button>
+                            <button @click="addReaction(msg.id,'clap')" class="reaction-btn flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs">👏 <span x-text="msg.reactions.clap"></span></button>
+                            <button @click="addReaction(msg.id,'fire')" class="reaction-btn flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs">🔥 <span x-text="msg.reactions.fire"></span></button>
+                            <span class="text-white/20 text-xs ml-auto" x-text="msg.time"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div x-show="filteredMsgs.length === 0" class="text-center py-16">
+        <p class="text-5xl mb-4">🔍</p>
+        <p class="text-white/40">Tidak ada pesan yang sesuai.</p>
+    </div>
+
+    <!-- CTA ke halaman penuh -->
+    <div class="text-center mt-10">
+        <p class="text-white/30 text-sm mb-5">Lihat lebih banyak pesan & reaksi di halaman lengkap 💬</p>
+        <a href="messages.html"
+           class="btn-shimmer inline-flex items-center gap-3 px-10 py-4 rounded-2xl font-display font-bold text-black text-lg transition-all hover:scale-105 active:scale-95"
+           style="background: linear-gradient(135deg, #00ff88, #00cc6a); box-shadow: 0 0 30px rgba(0,255,136,0.35);">
+            💌 Lihat Semua Pesan
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+        </a>
+    </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="py-12" style="border-top: 1px solid rgba(0,255,136,0.08);">
+    <div class="max-w-7xl mx-auto px-4 md:px-8">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="text-center md:text-left">
+                <div class="flex items-center gap-3 justify-center md:justify-start mb-2">
+                    <div class="w-8 h-8 rounded-xl flex items-center justify-center text-base"
+                         style="background: linear-gradient(135deg, #00ff88, #00994d);">🎓</div>
+                    <span class="font-display font-black text-lg text-white">REGE<span style="color:#00ff88;">NOSA</span></span>
+                </div>
+                <p class="text-white/30 text-sm">© 2024 XII IIK Digital Archive. Made with 💚 by TwinzDev.</p>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="https://www.instagram.com/regenosa.26?igsh=MTVtYnI2ZnprcGRmMA==" class="w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-sm transition-all hover:scale-110"
+                   style="background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.15); color: #00ff88;">IG</a>
+                <a href="#" class="w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-sm transition-all hover:scale-110"
+                   style="background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.15); color: #00ff88;">YT</a>
+                <a href="#" class="w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-sm transition-all hover:scale-110"
+                   style="background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.15); color: #00ff88;">TT</a>
+            </div>
+            
+            <!-- Navigation Links -->
+            <div class="flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-white/30">
+                <a href="#home" class="hover:text-neon transition-colors">Home</a>
+                <span style="color: rgba(0,255,136,0.3);">•</span>
+                <a href="#story" class="hover:text-neon transition-colors">Story</a>
+                <span style="color: rgba(0,255,136,0.3);">•</span>
+                <a href="#squad" class="hover:text-neon transition-colors">Squad</a>
+                <span style="color: rgba(0,255,136,0.3);">•</span>
+                <a href="#gallery" class="hover:text-neon transition-colors">Gallery</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ===================== LIGHTBOX ===================== -->
+<div x-show="showLightbox" x-cloak x-transition.opacity
+     class="fixed inset-0 z-[120] flex items-center justify-center p-4"
+     style="background: rgba(5,10,14,0.97); backdrop-filter: blur(20px);"
+     @click.self="showLightbox = false"
+     @keydown.escape.window="showLightbox = false">
+
+    <button @click="showLightbox = false" class="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-2xl text-white transition-all hover:scale-110"
+            style="background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.2);">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </button>
+
+    <div class="max-w-5xl w-full flex flex-col items-center">
+        <img :src="activeImg + '?q=90&w=1200'" class="max-w-full max-h-[80vh] rounded-2xl object-contain"
+             style="border: 1px solid rgba(0,255,136,0.2); box-shadow: 0 0 60px rgba(0,255,136,0.1);">
+        <p class="mt-6 text-white/30 text-sm">Klik di luar gambar atau tekan ESC untuk kembali</p>
+    </div>
+</div>
+
+<!-- ===================== SQUAD MODAL ===================== -->
+<!-- MODAL -->
+<div x-show="showModal" x-cloak
+     x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+     x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90"
+     class="fixed inset-0 z-[110] flex items-center justify-center p-3 sm:p-6"
+     style="background:rgba(5,10,14,0.85);backdrop-filter:blur(12px)">
+
+    <div @click.away="showModal = false" class="w-full max-w-3xl rounded-[2rem] overflow-hidden flex flex-col md:flex-row relative"
+         style="background:#0d1117;border:1px solid rgba(0,255,136,0.15);box-shadow:0 20px 60px rgba(0,255,136,0.15)">
+
+         <!-- CLOSE BUTTON -->
+         <button @click="showModal = false" class="absolute top-4 right-4 z-50 w-10 h-10 flex items-center justify-center rounded-xl text-white/70 hover:text-white transition-all hover:scale-110"
+                style="background:rgba(0,0,0,0.4);backdrop-filter:blur(5px);border:1px solid rgba(255,255,255,0.1)">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+            
+
+        <!-- image member (anggota)  -->
+         <div class="w-full md:w-2/5 relative bg-black/50">
+            <!-- 🔥 FIX UTAMA ADA DI SINI -->
+            <img :src="selectedMember.img" 
+                 class="w-full h-[45vh] sm:h-[50vh] md:h-full object-cover object-top"
+                 alt="Member Photo">
+            
+            <!-- overlay mobile -->
+            <div class="absolute inset-0 md:hidden" style="background:linear-gradient(to top, #0d1117 0%, transparent 40%, transparent 100%)"></div>
+            <!-- overlay desktop -->
+            <!-- <div class="absolute inset-0 hidden md:block" style="background:linear-gradient(to right, transparent 0%, transparent 70%, #0d1117 100%)"></div> -->
+
+            <!-- Emoji -->
+            <!-- <div class="absolute bottom-4 right-4 md:bottom-6 md:right-6 text-4xl bg-[#0d1117] rounded-full p-2 border border-[#00ff88]/30 shadow-[0_0_15px_rgba(0,255,136,0.3)] float" x-text="selectedMember.emoji"></div> -->
+        </div>
+
+            <!-- CONTENT -->
+            <div class="w-full md:w-3/5 p-5 md:p-10 flex flex-col justify-center">
+
+            <!-- HEADER -->
+            <div class="mb-3">
+                <div class="flex items-center gap-2 mb-2">
+                    <!-- No -->
+                    <!-- <span class="text-xs font-bold px-3 py-1 rounded-lg"
+                          style="background:rgba(0,255,136,0.1);color:#00ff88"
+                          x-text="'No. ' + selectedMember.no"></span> -->
+                    <!-- Role -->
+                    <span class="text-xs uppercase font-bold"
+                          style="color:#00ff88"
+                          x-text="selectedMember.role"></span>
+                </div>
+                <!-- Name -->
+                <h3 class="font-display font-black text-xl md:text-4xl text-white"
+                    x-text="selectedMember.name"></h3>
+
+                <p class="text-[#00ff88] text-sm flex items-center gap-2 font-medium">
+                    <!-- Logo@ -->
+                    <!-- <svg class="w-4 h-4 text-[#00ff88]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/></svg> -->
+                    <span x-text="selectedMember.ig"></span>
+                </p>
+            </div>
+            
+            <!-- BIO -->
+            <div class="p-3 rounded-xl mb-5"
+                 style="background:rgba(0,255,136,0.03);border:1px solid rgba(0,255,136,0.1)">
+                <p class="text-white/80 italic text-sm"
+                   x-text="'&quot;' + selectedMember.bio + '&quot;'"></p>
+            </div>
+
+            <!-- INFO -->
+            <div class="grid grid-cols-2 gap-3 mb-6">
+                
+                <div class="p-3 rounded-xl"
+                     style="background:rgba(255,255,255,0.02)">
+                    <p class="text-xs text-[#00ff88] font-bold">🎯 Hobi</p>
+                    <p class="text-sm text-white/90" x-text="selectedMember.hobi"></p>
+                </div>
+                
+                <div class="p-3 rounded-xl"
+                     style="background:rgba(255,255,255,0.02)">
+                    <p class="text-xs text-[#00ff88] font-bold">🚀 Cita-cita</p>
+                    <p class="text-sm text-white/90" x-text="selectedMember.cita"></p>
+                </div>
+            </div>
+
+           <!-- BUTTON Instagram -->
+            <a :href="selectedMember.ig ? 'https://www.instagram.com/' + selectedMember.ig.replace('@', '') : '#'" 
+               target="_blank" rel="noopener noreferrer"
+               class="btn-shimmer flex items-center justify-center gap-2 w-full py-4 rounded-2xl font-bold text-black mt-auto transition-transform hover:scale-[1.02]"
+               style="background:linear-gradient(135deg,#00ff88,#00cc6a);box-shadow:0 10px 25px rgba(0,255,136,0.25)">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                Lihat Instagram
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Intersection Observer for reveal animations
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
